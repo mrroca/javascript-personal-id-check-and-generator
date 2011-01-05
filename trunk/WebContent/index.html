@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>JavaScript Personal Id check and generator</title>
+<link type="text/css" href="css/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.7.custom.min.js"></script>
+<script type="text/javascript" src="js/personal-id.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#tabs").tabs();
+		$("#errorRow").hide();
+	});
+
+	function onSubmentEvent(form) {
+		var id = $('#personalIdInput').val();
+		var country = $('#country').val()
+		if (!id) {
+			$("#inputError").html("Id skal udfyldes!");
+			$("#errorRow").show();
+		}
+		else {
+			$("#errorRow").hide();
+			var resultText = testPersonalId(id, country);
+			$("#resultText").html(resultText);
+		}
+	}	
+</script>
+</head>
+<body>
+<h2>JavaScript Person Id tester og generator</h2>
+<div id="tabs">
+	<ul>
+		<li><a href="#tab-check">Test</a></li>
+		<li><a href="#tab-generate">Generer</a></li>
+		<li><a href="#tab-about">Om</a></li>
+	</ul>
+	<div id="tab-check">
+		<form action="#" onsubmit="onSubmentEvent(this)">
+			<table>
+				<tr>
+					<td><label>Land:</label></td>
+					<td colspan="2">
+						<select id="country">
+						  <option selected="selected" value="dk">Danmark</option>
+						  <option value="se">Sverige</option>
+						</select>					
+					</td>
+				</tr>
+				<tr>
+					<td><label>Id:</label></td>
+					<td>
+						<input id="personalIdInput" type="text" maxlength="11" size="14"/>
+					</td>
+					<td align="right">
+						<input type="submit" value="Test"/>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top"><label>Resultat:</label></td>
+					<td colspan="2">
+						<span id="resultText"></span>
+					</td>
+				</tr>
+				<tr id="errorRow">
+					<td colspan="3">
+						<div class="ui-widget">
+							<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+								<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+								<strong>Fejl:</strong>&nbsp;<span id="inputError">xx</span></p>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="tab-generate">
+		<p>todo 2</p>
+	</div>
+	<div id="tab-about">
+		<p>Denne side er lavet til test og generering af danske cpr-numre og svenske personnumre.</p>
+		<p>Siden er lavet vha. følgende JavaScript Libray: <a href="http://jquery.com/">jQuery</a></p>
+		<p>Udviklet af: Jan Scrhøder Hansen</p>
+	</div>
+</div>
+</body>
+</html>
