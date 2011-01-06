@@ -25,7 +25,7 @@ function TestDKPersonalId(id) {
 				returnHtml += "<li>Modulus 11 fejl</li>";
 			}
 			var birhtdate = this.getBirthDate();
-			if (birhtdate == undefined) {
+			if (birhtdate == null) {
 				errorFound = true;
 				returnHtml += "<li>Ikke gyldig fødselsdag</li>";
 			}
@@ -45,6 +45,9 @@ function TestDKPersonalId(id) {
 			else {
 				okReturnHtml += "<li>Køn: Kvinde</li>";
 			}
+			if (this.noModulus11Validation()) {
+				okReturnHtml += "<li>Modulus 11 kontrol, kan ikke benyttes for denne fødselsdag.</li>";
+			}
 			okReturnHtml += "</ul>";
 			return okReturnHtml;
 		}
@@ -63,21 +66,38 @@ function TestDKPersonalId(id) {
 	this.modulus11Validation = function() {
 		var modulus11Ok = false;
 		if (id.length == 11) {
-			var multiply = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1];
-			var sum = 0;
-			var pos = 0;
-			for (i = 0; i < 10; i++) {
-				var intValue = parseInt(id.substring(pos, pos + 1));
-				sum += intValue * multiply[i];
-				if (i == 5) pos++; //Ignore dash
-				pos++;
+			if (this.noModulus11Validation()) {
+				return true;
 			}
-            if (sum % 11 == 0) {
-            	modulus11Ok = true;
-            }
+			else {
+				var multiply = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1];
+				var sum = 0;
+				var pos = 0;
+				for (i = 0; i < 10; i++) {
+					var intValue = parseInt(id.substring(pos, pos + 1));
+					sum += intValue * multiply[i];
+					if (i == 5) pos++; //Ignore dash
+					pos++;
+				}
+	            if (sum % 11 == 0) {
+	            	modulus11Ok = true;
+	            }
+			}
 		}
 		return modulus11Ok;
 	};
+	
+	this.noModulus11Validation = function() {
+		var birthdate = this.getBirthDate();
+		var gender = this.getGender();
+		if (birthdate != null) {
+			var noModulusOnThisDate = $.datepicker.parseDate('ddmmyy', '01011965'); 
+			if (birthdate.getTime() == noModulusOnThisDate.getTime() && gender === "MALE") {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	this.getFullYear = function() {
 		var year = parseInt(id.substring(4, 6));
@@ -129,9 +149,13 @@ function TestDKPersonalId(id) {
 	};
 	
 	this.getBirthDate = function() {
-		var month = parseInt(id.substring(2, 4) - 1);
-		var day = parseInt(id.substring(0, 2));
-		return new Date(this.getFullYear(), month, day, 0, 0, 0, 0);
+		var str = id.substring(0, 4) + this.getFullYear();
+		try {
+			return $.datepicker.parseDate('ddmmyy', str);
+		}
+		catch (er) {
+			return null;
+		}
 	};
 	
 	this.getGender = function() {
