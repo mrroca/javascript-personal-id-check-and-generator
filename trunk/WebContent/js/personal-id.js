@@ -4,6 +4,21 @@
  * Created by Jan Schrøder Hansen
  *
  */
+function calculateModules11(id, to) {
+	var multiply = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1];
+	var sum = 0;
+	var pos = 0;
+	for (i = 0; i < to; i++) {
+		var x = id.substring(pos, pos + 1);
+		var intValue = parseInt(x);
+		sum += intValue * multiply[i];
+		if (i == 5) pos++; //Ignore dash
+		pos++;
+	}
+	return sum;
+}
+
+
 function TestDKPersonalId(id) {
 	this.id = id;
 	
@@ -70,15 +85,7 @@ function TestDKPersonalId(id) {
 				return true;
 			}
 			else {
-				var multiply = [4, 3, 2, 7, 6, 5, 4, 3, 2, 1];
-				var sum = 0;
-				var pos = 0;
-				for (i = 0; i < 10; i++) {
-					var intValue = parseInt(id.substring(pos, pos + 1));
-					sum += intValue * multiply[i];
-					if (i == 5) pos++; //Ignore dash
-					pos++;
-				}
+				var sum = calculateModules11(id, 10);
 	            if (sum % 11 == 0) {
 	            	modulus11Ok = true;
 	            }
@@ -97,7 +104,7 @@ function TestDKPersonalId(id) {
 			}
 		}
 		return false;
-	}
+	};
 	
 	this.getFullYear = function() {
 		var year = parseInt(id.substring(4, 6));
@@ -167,7 +174,106 @@ function TestDKPersonalId(id) {
 		else {
 			return "MALE";
 		}
-			
+	};
+}
+
+function GenerateDKPersonalIds(gender, birthdate) {
+	this.gender = gender;
+	this.birthdate = birthdate;
+	
+	this.getResultAsHtml = function() {
+		return "<p>" + 	this.generate() + "</p>";
+	};
+	
+	this.generate = function() {
+		var fixpart = "";
+		var day = birthdate.getDate();
+		if (day < 10) fixpart += "0";
+		fixpart += day;
+		var month = birthdate.getMonth() + 1;
+		if (month < 10) fixpart += "0";
+		fixpart += month;
+		var fullYear = birthdate.getFullYear();
+		var strYear = "" + fullYear;
+		fixpart += strYear.substring(2, 4);
+		fixpart += "-";
+		
+		var result = "";
+		var valid8Digits = this.getValid8Digits(fullYear);
+		var addComma = false;
+		
+		for(var next8Digit = 0; next8Digit < valid8Digits.length; next8Digit++) {
+			for (var nextSerialNumber = 0; nextSerialNumber <= 99; nextSerialNumber++) {
+				var nextId = fixpart;
+				nextId += valid8Digits[next8Digit];
+				if (nextSerialNumber < 10) nextId += "0";
+				nextId += nextSerialNumber;
+				var sum = calculateModules11(nextId, 9);
+	            var remainder = sum % 11;
+	            var modulus11 = 0;
+	            if (remainder != 0) modulus11 = 11 - remainder;
+				if (modulus11 < 10) {
+					nextId += modulus11;
+					if (modulus11 % 2 == 0 && gender === "FEMALE") {
+						if (addComma) result += ", ";
+						result += nextId;
+						addComma = true;
+					}
+					else if (modulus11 % 2 != 0 && gender === "MALE") {
+						if (addComma) result += ", ";
+						result += nextId;
+						addComma = true;
+					}
+				}
+			}
+		}
+		return result;
+	};
+	
+	this.getValid8Digits = function(fullYear) {
+		var century = Math.floor(fullYear / 100);
+		var year = fullYear % 100;
+		var valid8Digits = [];
+		var nextElement = 0;
+
+        if (century == 19)
+        {
+            valid8Digits[nextElement++] = 0;
+            valid8Digits[nextElement++] = 1;
+            valid8Digits[nextElement++] = 2;
+            valid8Digits[nextElement++] = 3;
+            if (year >= 37)
+            {
+            	valid8Digits[nextElement++] = 4;
+            	valid8Digits[nextElement++] = 9;
+            }
+        }
+        else if (century == 20)
+        {
+            if (year < 37)
+            {
+            	valid8Digits[nextElement++] = 4;
+            }
+            if (year <= 57)
+            {
+            	valid8Digits[nextElement++] = 5;
+            	valid8Digits[nextElement++] = 6;
+            	valid8Digits[nextElement++] = 7;
+            	valid8Digits[nextElement++] = 8;
+            }
+            if (year <= 36) valid8Digits[nextElement++] = 9;
+        }
+        else if (century == 1800)
+        {
+            if (year > 57)
+            {
+            	valid8Digits[nextElement++] = 5;
+            	valid8Digits[nextElement++] = 6;
+            	valid8Digits[nextElement++] = 7;
+            	valid8Digits[nextElement++] = 8;
+            }
+        }
+        return valid8Digits;
 	};
 }
 
@@ -182,5 +288,19 @@ function testPersonalId(id, country) {
 			break;
 		default:
 			return "Kun danske og svenske person id'er kan testes.";
+	}
+}
+
+function generatePersonalIds(country, gender, birthdate) {
+	switch (country) {
+	case "dk":
+		var dkGenerator = new GenerateDKPersonalIds(gender, birthdate);
+		return dkGenerator.getResultAsHtml();
+		break;
+	case "se":
+		return "Sverige virker <b>ikke</b> endnu.";
+		break;
+	default:
+		return "Kun danske og svenske person id'er kan genereres.";
 	}
 }
