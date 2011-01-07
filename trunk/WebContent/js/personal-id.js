@@ -182,7 +182,7 @@ function GenerateDKPersonalIds(gender, birthdate) {
 	this.birthdate = birthdate;
 	
 	this.getResultAsHtml = function() {
-		return "<p>" + 	this.generate() + "</p>";
+		return this.generate();
 	};
 	
 	this.generate = function() {
