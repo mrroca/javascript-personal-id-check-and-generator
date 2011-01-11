@@ -40,7 +40,7 @@
 	    $.datepicker.setDefaults($.datepicker.regional['da']);
 	});
 
-	function onTestSubmitEvent(form) {
+	function onTestSubmit() {
 		var id = $('#personalIdInput').val();
 		var country = $('#countryOnTestTab').val();
 		if (!id) {
@@ -55,7 +55,7 @@
 		}
 	}
 
-	function onGenerateSubmentEvent(form) {
+	function onGenerateSubmit() {
 		var country = $('#countryOnGenerateTab').val();
 		var gender = $('#gender').val();
 		var birthdate = $('#birthdatepicker').val();
@@ -104,91 +104,87 @@
 		<li><a href="#tab-about">Om</a></li>
 	</ul>
 	<div id="tab-test">
-		<form action="#" onsubmit="onTestSubmitEvent(this)">
-			<table>
-				<tr>
-					<td><label>Land:</label></td>
-					<td colspan="2">
-						<select id="countryOnTestTab">
-						  <option selected="selected" value="dk">Danmark</option>
-						  <option value="se">Sverige</option>
-						</select>					
-					</td>
-				</tr>
-				<tr>
-					<td><label>Id:</label></td>
-					<td>
-						<input id="personalIdInput" type="text" maxlength="11" size="14"/>
-					</td>
-					<td align="right">
-						<input type="submit" value="Test"/>
-					</td>
-				</tr>
-				<tr>
-					<td valign="top"><label>Resultat:</label></td>
-					<td colspan="2">
-						<span id="resultTextOnTestTab"></span>
-					</td>
-				</tr>
-				<tr id="errorRowOnTestTab">
-					<td colspan="3">
-						<div class="ui-widget">
-							<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
-								<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-								<strong>Fejl:</strong>&nbsp;<span id="inputErrorOnTestTab">xx</span></p>
-							</div>
+		<table>
+			<tr>
+				<td><label>Land:</label></td>
+				<td>
+					<select id="countryOnTestTab">
+					  <option selected="selected" value="dk">Danmark</option>
+					  <option value="se">Sverige</option>
+					</select>					
+				</td>
+			</tr>
+			<tr>
+				<td><label>Id:</label></td>
+				<td>
+					<input id="personalIdInput" type="text" maxlength="11" size="14"/>
+					&nbsp;&nbsp;&nbsp;&nbsp;					
+					<input type="submit" value="Test" onclick="onTestSubmit()"/>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top"><label>Resultat:</label></td>
+				<td>
+					<span id="resultTextOnTestTab"></span>
+				</td>
+			</tr>
+			<tr id="errorRowOnTestTab">
+				<td colspan="2">
+					<div class="ui-widget">
+						<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+							<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+							<strong>Fejl:</strong>&nbsp;<span id="inputErrorOnTestTab">xx</span></p>
 						</div>
-					</td>
-				</tr>
-			</table>
-		</form>
+					</div>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div id="tab-generate">
-		<form action="#" onsubmit="onGenerateSubmentEvent(this)">
-			<table>
-				<tr>
-					<td><label>Land:</label></td>
-					<td colspan="2">
-						<select id="countryOnGenerateTab" onchange="contryOnGenerateTabChanged(this)">
-						  <option selected="selected" value="dk">Danmark</option>
-						  <option value="se">Sverige</option>
-						</select>					
-					</td>
-				</tr>
-				<tr>
-					<td valign="top"><label>Fødselsdag:</label></td>
-					<td><input id="birthdatepicker" type="text" maxlength="10" size="12"/></td>
-				</tr>
-				<tr>
-					<td valign="top"><label>Køn:</label></td>
-					<td>
-						<select id="gender">
-						  <option selected="selected" value="MALE">Mand</option>
-						  <option value="FEMALE">Kvinde</option>
-						</select>					
-					</td>
-					<td align="right">
-						<input type="submit" value="Generer"/>
-					</td>
-				</tr>
-				<tr>
-					<td valign="top"><label>Resultat:</label></td>
-					<td colspan="2">
-						<span id="resultTextOnGenerateTab"></span>
-					</td>
-				</tr>
-				<tr id="errorRowOnGenerateTab">
-					<td colspan="3">
-						<div class="ui-widget">
-							<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
-								<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
-								<strong>Fejl:</strong>&nbsp;<span id="inputErrorOnGenerateTab">xx</span></p>
-							</div>
+		<table>
+			<tr>
+				<td><label>Land:</label></td>
+				<td>
+					<select id="countryOnGenerateTab" onchange="contryOnGenerateTabChanged(this)">
+					  <option selected="selected" value="dk">Danmark</option>
+					  <option value="se">Sverige</option>
+					</select>					
+				</td>
+			</tr>
+			<tr>
+				<td><label>Fødselsdag:</label></td>
+				<td>
+					<input id="birthdatepicker" type="text" maxlength="10" size="12"/>
+				</td>
+			</tr>
+			<tr>
+				<td><label>Køn:</label></td>
+				<td>
+					<select id="gender">
+					  <option selected="selected" value="MALE">Mand</option>
+					  <option value="FEMALE">Kvinde</option>
+					</select>
+					&nbsp;&nbsp;&nbsp;&nbsp;					
+					<input type="submit" value="Generer" onclick="onGenerateSubmit()"/>
+				</td>
+			</tr>
+			<tr>
+				<td valign="top"><label>Resultat:</label></td>
+				<td>
+					<span id="resultTextOnGenerateTab"></span>
+				</td>
+			</tr>
+			<tr id="errorRowOnGenerateTab">
+				<td colspan="2">
+					<div class="ui-widget">
+						<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+							<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+							<strong>Fejl:</strong>&nbsp;<span id="inputErrorOnGenerateTab">xx</span></p>
 						</div>
-					</td>
-				</tr>
-			</table>
-		</form>	
+					</div>
+				</td>
+			</tr>
+		</table>
 	</div>
 	<div id="tab-about">
 		<p>Denne side er lavet til test og generering af danske og svenske personnumre.</p>
