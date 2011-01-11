@@ -200,7 +200,7 @@ function GenerateDKPersonalIds(gender, birthdate) {
 		var fullYear = birthdate.getFullYear();
 		var strYear = "" + fullYear;
 		fixpart += strYear.substring(2, 4);
-		fixpart += "\u2011"; //no break -
+		fixpart += "-"; 
 		
 		var result = "";
 		var valid8Digits = this.getValid8Digits(fullYear);
@@ -228,7 +228,7 @@ function GenerateDKPersonalIds(gender, birthdate) {
 						result += nextId;
 						addComma = true;
 					}
-				}
+ 				}
 			}
 		}
 		return result;
