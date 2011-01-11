@@ -98,8 +98,12 @@ function TestDKPersonalId(id) {
 		var birthdate = this.getBirthDate();
 		var gender = this.getGender();
 		if (birthdate != null) {
-			var noModulusOnThisDate = $.datepicker.parseDate('ddmmyy', '01011965'); 
-			if (birthdate.getTime() == noModulusOnThisDate.getTime() && gender === "MALE") {
+			var noModulusOn01011965 = $.datepicker.parseDate('ddmmyy', '01011965'); 
+			if (birthdate.getTime() == noModulusOn01011965.getTime() && gender === "MALE") {
+				return true;
+			}
+			var noModulusOn01011966 = $.datepicker.parseDate('ddmmyy', '01011966'); 
+			if (birthdate.getTime() == noModulusOn01011966.getTime() && gender === "MALE") {
 				return true;
 			}
 		}
