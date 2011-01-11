@@ -220,12 +220,12 @@ function GenerateDKPersonalIds(gender, birthdate) {
 					nextId += modulus11;
 					if (modulus11 % 2 == 0 && gender === "FEMALE") {
 						if (addComma) result += ", ";
-						result += nextId;
+						result += "<nobr>" + nextId + "</nobr>";
 						addComma = true;
 					}
 					else if (modulus11 % 2 != 0 && gender === "MALE") {
 						if (addComma) result += ", ";
-						result += nextId;
+						result += "<nobr>" + nextId + "</nobr>";
 						addComma = true;
 					}
  				}
