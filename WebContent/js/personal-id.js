@@ -267,7 +267,7 @@ function GenerateDKPersonalIds(gender, birthdate) {
             }
             if (year <= 36) valid8Digits[nextElement++] = 9;
         }
-        else if (century == 1800)
+        else if (century == 18)
         {
             if (year > 57)
             {
