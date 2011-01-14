@@ -89,11 +89,13 @@
 	function dkMaxAndMinDates() {
 		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1885, 1 - 1, 1));
 		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2057, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1885:2057');
 	}
 
 	function seMaxAndMinDates() {
 		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1800, 1 - 1, 1));
 		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2099, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1800:2099');
 	}
 	
 </script>
