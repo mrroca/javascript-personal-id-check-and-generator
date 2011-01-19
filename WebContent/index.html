@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="description" content="Page that can verify and generate Danish and Swedish personal id numbers." />
-<meta name="keywords" content="cpr, cpr-nummer, personnumre, personnr, personnummer, test" />
+<meta name="keywords" content="cpr, cpr-nummer, cpr-nr, cpr nr, cpr nummer, personnumre, personnr, person nr, personnummer, test" />
 <meta name="author" content="Jan Schrøder Hansen" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Personnummer tester og generator</title>
@@ -122,7 +122,7 @@
 			<tr>
 				<td><label>Personnr.:</label></td>
 				<td>
-					<input id="personalIdInput" type="text" maxlength="11" size="14"/>
+					<input id="personalIdInput" type="text" maxlength="11" size="14" title="Indtast et personnummer. Med bindestreg."/>
 					&nbsp;&nbsp;&nbsp;&nbsp;					
 					<input type="submit" value="Test" onclick="onTestSubmit()"/>
 				</td>
@@ -133,7 +133,7 @@
 					<span id="resultTextOnTestTab"></span>
 				</td>
 			</tr>
-			<tr id="errorRowOnTestTab">
+			<tr id="errorRowOnTestTab" style="display:none">
 				<td colspan="2">
 					<div class="ui-widget">
 						<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
@@ -179,7 +179,7 @@
 					<span id="resultTextOnGenerateTab"></span>
 				</td>
 			</tr>
-			<tr id="errorRowOnGenerateTab">
+			<tr id="errorRowOnGenerateTab" style="display:none">
 				<td colspan="2">
 					<div class="ui-widget">
 						<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
