@@ -228,8 +228,7 @@ function GenerateDKPersonalIds(gender, birthdate) {
 		
 		var result = "";
 		var valid8Digits = this.getValid8Digits(fullYear);
-		var addComma = false;
-		
+		var counter = 0;
 		for(var next8Digit = 0; next8Digit < valid8Digits.length; next8Digit++) {
 			for (var nextSerialNumber = 0; nextSerialNumber <= 99; nextSerialNumber++) {
 				var nextId = fixpart;
@@ -243,18 +242,19 @@ function GenerateDKPersonalIds(gender, birthdate) {
 				if (modulus11 < 10) {
 					nextId += modulus11;
 					if (modulus11 % 2 == 0 && gender === "FEMALE") {
-						if (addComma) result += ", ";
+						if (counter > 0) result += ", ";
 						result += "<nobr>" + nextId + "</nobr>";
-						addComma = true;
+						counter++;
 					}
 					else if (modulus11 % 2 != 0 && gender === "MALE") {
-						if (addComma) result += ", ";
+						if (counter > 0) result += ", ";
 						result += "<nobr>" + nextId + "</nobr>";
-						addComma = true;
+						counter++;
 					}
  				}
 			}
 		}
+		result += "<br /><br /><b>Antal: " + counter + "</b>";
 		return result;
 	};
 	
@@ -461,21 +461,20 @@ function GenerateSEPersonalIds(gender, birthdate) {
         if (gender == "MALE") {
             startFrom = 1;
         }
-        var addComma = false;
+        var counter = 0;
         for (var i = startFrom; i < 1000; i = i + 2) {
         	var nextId = fixpart;
             if (i < 100) nextId += "0";
             if (i < 10) nextId += "0";
             nextId += "" + i;
             nextId += "" + calculateSECheckSum(nextId);
-			if (addComma) {
+			if (counter > 0) {
 				result += ", ";
 			}
-			else {
-				addComma = true;
-			}
 			result += "<nobr>" + nextId + "</nobr>";
+			counter++;
         }
+        result += "<br /><br /><b>Antal: " + counter + "</b>";
 		return result;
 	};
 }
