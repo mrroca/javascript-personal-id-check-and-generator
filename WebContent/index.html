@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta name="description" content="Page that can verify and generate Danish and Swedish personal id numbers." />
-<meta name="keywords" content="cpr, cpr-nummer, cpr-nr, cpr nr, cpr nummer, personnumre, personnr, person nr, personnummer, test" />
+<meta name="keywords" content="cpr, cpr-nummer, cpr-nr, cpr nr, cpr nummer, personnumre, personnr, person nr, personnummer, test, generator" />
 <meta name="author" content="Jan Schrøder Hansen" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Personnummer tester og generator</title>
@@ -47,7 +47,7 @@
 		var id = $('#personalIdInput').val();
 		var country = $('#countryOnTestTab').val();
 		if (!id) {
-			$("#inputErrorOnTestTab").html("Id skal udfyldes!");
+			$("#inputErrorOnTestTab").html("Personnr. skal udfyldes!");
 			$("#errorRowOnTestTab").show();
 			$("#resultTextOnTestTab").html("");
 		}
@@ -105,7 +105,7 @@
 <div id="tabs-main">
 	<ul>
 		<li><a href="#tab-test">Test</a></li>
-		<li><a href="#tab-generate">Generer</a></li>
+		<li><a href="#tab-generate">Generator</a></li>
 		<li><a href="#tab-about">Om</a></li>
 	</ul>
 	<div id="tab-test">
