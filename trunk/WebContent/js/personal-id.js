@@ -18,6 +18,30 @@ function calculateModules11(id, to) {
 	return sum;
 }
 
+function calculateSECheckSum(id) {
+	var sum = 0;
+	for (var pos = 0; pos < 10; pos++) {
+		switch (pos) {
+			case 0:
+			case 2:
+			case 4:
+			case 7:
+			case 9:
+				var intValue = 2 * parseInt(id.substring(pos, pos + 1));
+				if (intValue > 9) intValue = 1 + (intValue - 10);
+				sum += intValue;
+				break;
+			case 6: //Ignore dash
+				break;
+			default:
+				sum += parseInt(id.substring(pos, pos + 1));
+				break;
+		}
+	}
+    var checksum = 10 - (sum % 10);
+    if (checksum == 10) checksum = 0;
+	return checksum;
+}
 
 function TestDKPersonalId(id) {
 	this.id = id;
@@ -281,6 +305,182 @@ function GenerateDKPersonalIds(gender, birthdate) {
 	};
 }
 
+function TestSEPersonalId(id) {
+	this.id = id;
+	
+	this.getResultAsHtml = function() {
+		var returnHtml = "";
+		var errorsFound = false;
+		if (!this.formatValidation()) {
+			errorsFound = true;
+			returnHtml += "<li>Format fejl: DDMMYY-XXXY</li>";
+			returnHtml += "<ul>";
+			returnHtml += "<li>-/+ Hvis personen er over 100 år gammel, så benyttes der et \"+\" ellers benyttes \"-\"</li>";
+			returnHtml += "<li>DDMMYY = fødselsdag</li>";
+			returnHtml += "<li>XXX = løbenummer m.m.</li>";
+			returnHtml += "<li>Y = Tjeksum.</li>";
+			returnHtml += "</ul>";
+		}
+		else {
+			if (!this.checksumValidation()) {
+				errorsFound = true;
+				returnHtml += "<li>Checksum fejl</li>";
+			}
+			var birhtdate = this.getBirthDate();
+			if (birhtdate == null) {
+				errorFound = true;
+				returnHtml += "<li>Ikke gyldig fødselsdag</li>";
+			}
+		}
+		if (errorsFound) {
+			return "Følgende fejl er fundet:<br /><ul>" + returnHtml + "</ul>";
+		}
+		else {
+			var okReturnHtml = "";
+			okReturnHtml += "<b>Ok!</b><br/>";
+			okReturnHtml += "<ul>";
+			okReturnHtml += "<li>Født: " + this.getBirthDate().toLocaleDateString() + "</li>";
+			var gender = this.getGender();
+			if (gender === "MALE") {
+				okReturnHtml += "<li>Køn: Mand</li>";
+			}
+			else {
+				okReturnHtml += "<li>Køn: Kvinde</li>";
+			}
+			okReturnHtml += "</ul>";
+			return okReturnHtml;
+		}
+		return returnHtml; 
+	};
+	
+	this.formatValidation = function() {
+		var re = new RegExp("^(((0|1|2)[0-9])|(3[0-1]))((0[1-9])|(1[0-2]))[0-9]{2}(-|\\+){1}[0-9]{4}$");
+		if (id.match(re)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+	
+	this.checksumValidation = function() {
+		var checksumOk = false;
+		if (id.length == 11) {
+			var calcCheckSum = calculateSECheckSum(id);
+			var checkSum = parseInt(id.substring(10, 11));
+            if (calcCheckSum == checkSum) {
+            	checksumOk = true;
+            }
+		}
+		return checksumOk;
+	};	
+	
+	this.getBirthDate = function() {
+		var str = id.substring(0, 4) + this.getFullYear();
+		try {
+			return $.datepicker.parseDate('ddmmyy', str);
+		}
+		catch (er) {
+			return null;
+		}
+	};
+
+	this.getFullYear = function() {
+		var now = new Date();
+		var year = now.getFullYear();
+        var firstPart = Math.floor(year / 100); 
+        var secondPart = year - firstPart * 100;
+        var yearPartFromPersonalIdentityNumber = parseInt(id.substring(4, 6));
+        var dash = id.substring(6, 7);
+        if (yearPartFromPersonalIdentityNumber <= secondPart)
+        {
+            if (dash == '+') //Person over 100 years old
+            {
+                firstPart--;
+            }                
+        }
+        else
+        {
+            if (dash == '+') //Person over 100 years old
+            {
+                firstPart = firstPart - 2;
+            }
+            else
+            {
+                firstPart--;
+            }
+        }
+        return (firstPart * 100) + yearPartFromPersonalIdentityNumber;
+	};
+	
+	this.getGender = function() {
+		var digit10 = parseInt(id.substring(9, 10));
+		var x = digit10 % 2;
+		if (x === 0) {
+			return "FEMALE";
+		}
+		else {
+			return "MALE";
+		}
+	};
+}
+
+function GenerateSEPersonalIds(gender, birthdate) {
+	this.gender = gender;
+	this.birthdate = birthdate;
+	
+	this.getResultAsHtml = function() {
+		return this.generate();
+	};
+	
+	this.generate = function() {
+		var now = new Date();
+		var year = now.getFullYear();
+		var age = year - birthdate.getFullYear();
+		if (age > 199) {
+			return "Alder over 199!";
+		}
+		var fixpart = "";
+		var day = birthdate.getDate();
+		if (day < 10) fixpart += "0";
+		fixpart += day;
+		var month = birthdate.getMonth() + 1;
+		if (month < 10) fixpart += "0";
+		fixpart += month;
+		var fullYear = birthdate.getFullYear();
+		var strYear = "" + fullYear;
+		fixpart += strYear.substring(2, 4);
+		if (age < 100) {
+			fixpart += "-";
+		}
+		else {
+			fixpart += "+";
+		}
+		var result = "";
+        var startFrom = 0;
+        if (gender == "MALE") {
+            startFrom = 1;
+        }
+        var addComma = false;
+        for (var i = startFrom; i < 1000; i = i + 2) {
+        	var nextId = fixpart;
+            if (i < 100) nextId += "0";
+            if (i < 10) nextId += "0";
+            nextId += "" + i;
+            nextId += "" + calculateSECheckSum(nextId);
+			if (addComma) {
+				result += ", ";
+			}
+			else {
+				addComma = true;
+			}
+			result += "<nobr>" + nextId + "</nobr>";
+        }
+		return result;
+	};
+}
+
+
 function testPersonalId(id, country) {
 	switch (country) {
 		case "dk":
@@ -288,7 +488,8 @@ function testPersonalId(id, country) {
 			return dkTester.getResultAsHtml();
 			break;
 		case "se":
-			return "Sverige virker <b>ikke</b> endnu.";
+			var seTester = new TestSEPersonalId(id);
+			return seTester.getResultAsHtml();
 			break;
 		default:
 			return "Kun danske og svenske person id'er kan testes.";
@@ -302,7 +503,8 @@ function generatePersonalIds(country, gender, birthdate) {
 		return dkGenerator.getResultAsHtml();
 		break;
 	case "se":
-		return "Sverige virker <b>ikke</b> endnu.";
+		var seGenerator = new GenerateSEPersonalIds(gender, birthdate);
+		return seGenerator.getResultAsHtml();
 		break;
 	default:
 		return "Kun danske og svenske person id'er kan genereres.";
