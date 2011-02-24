@@ -18,7 +18,11 @@
 		$("#errorRowOnGenerateTab").hide();
 		$("#birthdatepicker").datepicker(
 				{changeYear: true, 
-				 changeMonth: true},
+				 changeMonth: true,
+				 showOn: "button",
+				 buttonImage: "images/calendar.gif",
+			     buttonImageOnly: true
+				 },
 				 $.datepicker.regional['da'] 
 				);
 		dkMaxAndMinDates();
@@ -159,7 +163,7 @@
 			<tr>
 				<td><label>Fødselsdag:</label></td>
 				<td>
-					<input id="birthdatepicker" type="text" maxlength="10" size="12"/>
+					<input id="birthdatepicker" type="text" maxlength="10" size="12" disabled="disabled"/>
 				</td>
 			</tr>
 			<tr>
