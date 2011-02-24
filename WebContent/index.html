@@ -21,7 +21,8 @@
 				 changeMonth: true,
 				 showOn: "button",
 				 buttonImage: "images/calendar.gif",
-			     buttonImageOnly: true
+			     buttonImageOnly: true,
+				 buttonText: 'Vælg fødselsdag'
 				 },
 				 $.datepicker.regional['da'] 
 				);
@@ -163,7 +164,8 @@
 			<tr>
 				<td><label>Fødselsdag:</label></td>
 				<td>
-					<input id="birthdatepicker" type="text" maxlength="10" size="12" disabled="disabled"/>
+					<input id="birthdatepicker" type="text" maxlength="10" size="12" readonly="readonly"
+						title="Vælg en fødselsdag, ved at trykke på kalender ikonet."/>
 				</td>
 			</tr>
 			<tr>
