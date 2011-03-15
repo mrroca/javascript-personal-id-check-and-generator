@@ -12,6 +12,18 @@
 <script type="text/javascript" src="js/jquery-ui-1.8.7.custom.min.js"></script>
 <script type="text/javascript" src="js/personal-id.js"></script>
 <script type="text/javascript">
+	function dkMaxAndMinDates() {
+		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1885, 1 - 1, 1));
+		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2057, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1885:2057');
+	}
+
+	function seMaxAndMinDates() {
+		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1800, 1 - 1, 1));
+		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2099, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1800:2099');
+	}
+
 	$(document).ready(function(){
 		$("#tabs-main").tabs();
 		$("#errorRowOnTestTab").hide();
@@ -24,10 +36,10 @@
 			     buttonImageOnly: true,
 				 buttonText: 'Vælg fødselsdag'
 				 },
-				 $.datepicker.regional['da'] 
+				 $.datepicker.regional.da
 				);
 		dkMaxAndMinDates();
-	    $.datepicker.regional['da'] = {
+	    $.datepicker.regional.da = {
 			closeText: 'Luk',
 	        prevText: '&#x3c;Forrige',
 			nextText: 'Næste&#x3e;',
@@ -45,7 +57,7 @@
 			isRTL: false,
 			showMonthAfterYear: false,
 			yearSuffix: ''};
-	    $.datepicker.setDefaults($.datepicker.regional['da']);
+	    $.datepicker.setDefaults($.datepicker.regional.da);
 	});
 
 	function onTestSubmit() {
@@ -67,7 +79,7 @@
 		var country = $('#countryOnGenerateTab').val();
 		var gender = $('#gender').val();
 		var birthdate = $('#birthdatepicker').val();
-		if (birthdate == "") {
+		if (birthdate === "") {
 			$("#inputErrorOnGenerateTab").html("Fødselsdag skal udfyldes!");
 			$("#errorRowOnGenerateTab").show();
 			$("#resultTextOnGenerateTab").html("");
@@ -90,19 +102,6 @@
 			seMaxAndMinDates();
 		}
 	}
-
-	function dkMaxAndMinDates() {
-		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1885, 1 - 1, 1));
-		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2057, 12 - 1, 31));
-		$("#birthdatepicker").datepicker( "option", "yearRange", '1885:2057');
-	}
-
-	function seMaxAndMinDates() {
-		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1800, 1 - 1, 1));
-		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2099, 12 - 1, 31));
-		$("#birthdatepicker").datepicker( "option", "yearRange", '1800:2099');
-	}
-	
 </script>
 </head>
 <body>
