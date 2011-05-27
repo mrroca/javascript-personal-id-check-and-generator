@@ -8,101 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <title>Personnummer tester og generator</title>
 <link type="text/css" href="css/redmond/jquery-ui-1.8.7.custom.css" rel="stylesheet" />	
-<script type="text/javascript" src="js/jquery-1.4.4.js"></script>
-<script type="text/javascript" src="js/jquery-ui-1.8.7.custom.min.js"></script>
-<script type="text/javascript" src="js/personal-id.js"></script>
-<script type="text/javascript">
-	function dkMaxAndMinDates() {
-		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1885, 1 - 1, 1));
-		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2057, 12 - 1, 31));
-		$("#birthdatepicker").datepicker( "option", "yearRange", '1885:2057');
-	}
-
-	function seMaxAndMinDates() {
-		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1800, 1 - 1, 1));
-		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2099, 12 - 1, 31));
-		$("#birthdatepicker").datepicker( "option", "yearRange", '1800:2099');
-	}
-
-	$(document).ready(function(){
-		$("#tabs-main").tabs();
-		$("#errorRowOnTestTab").hide();
-		$("#errorRowOnGenerateTab").hide();
-		$("#birthdatepicker").datepicker(
-				{changeYear: true, 
-				 changeMonth: true,
-				 showOn: "button",
-				 buttonImage: "images/calendar.gif",
-			     buttonImageOnly: true,
-				 buttonText: 'Vælg fødselsdag'
-				 },
-				 $.datepicker.regional.da
-				);
-		dkMaxAndMinDates();
-	    $.datepicker.regional.da = {
-			closeText: 'Luk',
-	        prevText: '&#x3c;Forrige',
-			nextText: 'Næste&#x3e;',
-			currentText: 'Idag',
-	        monthNames: ['Januar','Februar','Marts','April','Maj','Juni',
-	        'Juli','August','September','Oktober','November','December'],
-	        monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
-	        'Jul','Aug','Sep','Okt','Nov','Dec'],
-			dayNames: ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'],
-			dayNamesShort: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
-			dayNamesMin: ['Sø','Ma','Ti','On','To','Fr','Lø'],
-			weekHeader: 'Uge',
-	        dateFormat: 'dd-mm-yy',
-			firstDay: 1,
-			isRTL: false,
-			showMonthAfterYear: false,
-			yearSuffix: ''};
-	    $.datepicker.setDefaults($.datepicker.regional.da);
-	});
-
-	function onTestSubmit() {
-		var id = $('#personalIdInput').val();
-		var country = $('#countryOnTestTab').val();
-		if (!id) {
-			$("#inputErrorOnTestTab").html("Personnr. skal udfyldes!");
-			$("#errorRowOnTestTab").show();
-			$("#resultTextOnTestTab").html("");
-		}
-		else {
-			$("#errorRowOnTestTab").hide();
-			var resultText = testPersonalId(id, country);
-			$("#resultTextOnTestTab").html(resultText);
-		}
-	}
-
-	function onGenerateSubmit() {
-		var country = $('#countryOnGenerateTab').val();
-		var gender = $('#gender').val();
-		var birthdate = $('#birthdatepicker').val();
-		if (birthdate === "") {
-			$("#inputErrorOnGenerateTab").html("Fødselsdag skal udfyldes!");
-			$("#errorRowOnGenerateTab").show();
-			$("#resultTextOnGenerateTab").html("");
-		}
-		else {
-			$("#errorRowOnGenerateTab").hide();
-			var bd = $.datepicker.parseDate('dd-mm-yy', birthdate);
-			var resultText = generatePersonalIds(country, gender, bd);
-			$("#resultTextOnGenerateTab").html(resultText);
-			
-		}
-	}
-
-	function contryOnGenerateTabChanged(changedElement) {
-		var country = changedElement.value;
-		if (country === "dk") {
-			dkMaxAndMinDates();
-		}
-		else {
-			seMaxAndMinDates();
-		}
-	}
-</script>
 </head>
 <body>
 <h2>Personnummer (cpr) tester og generator</h2>
@@ -210,5 +115,100 @@
 		<p>Udviklet af: <a href="http://users.cybercity.dk/~dsl575608/">Jan Schrøder Hansen</a></p>
 	</div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.7.custom.min.js"></script>
+<script type="text/javascript" src="js/personal-id.js"></script>
+<script type="text/javascript">
+	function dkMaxAndMinDates() {
+		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1885, 1 - 1, 1));
+		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2057, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1885:2057');
+	}
+
+	function seMaxAndMinDates() {
+		$("#birthdatepicker").datepicker( "option", "minDate", new Date(1800, 1 - 1, 1));
+		$("#birthdatepicker").datepicker( "option", "maxDate", new Date(2099, 12 - 1, 31));
+		$("#birthdatepicker").datepicker( "option", "yearRange", '1800:2099');
+	}
+
+	$(document).ready(function(){
+		$("#tabs-main").tabs();
+		$("#errorRowOnTestTab").hide();
+		$("#errorRowOnGenerateTab").hide();
+		$("#birthdatepicker").datepicker(
+				{changeYear: true, 
+				 changeMonth: true,
+				 showOn: "button",
+				 buttonImage: "images/calendar.gif",
+			     buttonImageOnly: true,
+				 buttonText: 'Vælg fødselsdag'
+				 },
+				 $.datepicker.regional.da
+				);
+		dkMaxAndMinDates();
+	    $.datepicker.regional.da = {
+			closeText: 'Luk',
+	        prevText: '&#x3c;Forrige',
+			nextText: 'Næste&#x3e;',
+			currentText: 'Idag',
+	        monthNames: ['Januar','Februar','Marts','April','Maj','Juni',
+	        'Juli','August','September','Oktober','November','December'],
+	        monthNamesShort: ['Jan','Feb','Mar','Apr','Maj','Jun',
+	        'Jul','Aug','Sep','Okt','Nov','Dec'],
+			dayNames: ['Søndag','Mandag','Tirsdag','Onsdag','Torsdag','Fredag','Lørdag'],
+			dayNamesShort: ['Søn','Man','Tir','Ons','Tor','Fre','Lør'],
+			dayNamesMin: ['Sø','Ma','Ti','On','To','Fr','Lø'],
+			weekHeader: 'Uge',
+	        dateFormat: 'dd-mm-yy',
+			firstDay: 1,
+			isRTL: false,
+			showMonthAfterYear: false,
+			yearSuffix: ''};
+	    $.datepicker.setDefaults($.datepicker.regional.da);
+	});
+
+	function onTestSubmit() {
+		var id = $('#personalIdInput').val();
+		var country = $('#countryOnTestTab').val();
+		if (!id) {
+			$("#inputErrorOnTestTab").html("Personnr. skal udfyldes!");
+			$("#errorRowOnTestTab").show();
+			$("#resultTextOnTestTab").html("");
+		}
+		else {
+			$("#errorRowOnTestTab").hide();
+			var resultText = testPersonalId(id, country);
+			$("#resultTextOnTestTab").html(resultText);
+		}
+	}
+
+	function onGenerateSubmit() {
+		var country = $('#countryOnGenerateTab').val();
+		var gender = $('#gender').val();
+		var birthdate = $('#birthdatepicker').val();
+		if (birthdate === "") {
+			$("#inputErrorOnGenerateTab").html("Fødselsdag skal udfyldes!");
+			$("#errorRowOnGenerateTab").show();
+			$("#resultTextOnGenerateTab").html("");
+		}
+		else {
+			$("#errorRowOnGenerateTab").hide();
+			var bd = $.datepicker.parseDate('dd-mm-yy', birthdate);
+			var resultText = generatePersonalIds(country, gender, bd);
+			$("#resultTextOnGenerateTab").html(resultText);
+			
+		}
+	}
+
+	function contryOnGenerateTabChanged(changedElement) {
+		var country = changedElement.value;
+		if (country === "dk") {
+			dkMaxAndMinDates();
+		}
+		else {
+			seMaxAndMinDates();
+		}
+	}
+</script>
 </body>
 </html>
