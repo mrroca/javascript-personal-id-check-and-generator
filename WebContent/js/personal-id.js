@@ -500,8 +500,9 @@ function testPersonalId(id, country) {
 			var dkTester = new TestDKPersonalId(id);
 			return dkTester.getResultAsHtml();
 		case "se":
+			return "Virker pt. ikke.";
 			var seTester = new TestSEPersonalId(id);
-			return seTester.getResultAsHtml();
+			//return seTester.getResultAsHtml();
 		default:
 			return "Kun danske og svenske person id'er kan testes.";
 	}
@@ -513,8 +514,9 @@ function generatePersonalIds(country, gender, birthdate) {
 		var dkGenerator = new GenerateDKPersonalIds(gender, birthdate);
 		return dkGenerator.getResultAsHtml();
 	case "se":
-		var seGenerator = new GenerateSEPersonalIds(gender, birthdate);
-		return seGenerator.getResultAsHtml();
+		return "Virker pt. ikke.";	
+		//var seGenerator = new GenerateSEPersonalIds(gender, birthdate);
+		//return seGenerator.getResultAsHtml();
 	default:
 		return "Kun danske og svenske person id'er kan genereres.";
 	}
